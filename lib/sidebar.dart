@@ -18,10 +18,6 @@ class Sidebar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 30),
       child: Column(
         children: [
-          /// Scrollable menu content
-          Expanded(
-            child: ListView(
-              children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: SizedBox(
@@ -33,7 +29,10 @@ class Sidebar extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-
+                 Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [   
                 /// 🔽 SALES
                 Theme(
                   data: ThemeData().copyWith(dividerColor: Colors.transparent),
@@ -104,14 +103,19 @@ class Sidebar extends StatelessWidget {
                   onTap: () => onItemSelected(13),
                 ),
                 ListTile(
+                  leading: const Icon(Icons.design_services, color: Colors.white),
+                  title: const Text('Account', style: TextStyle(color: Colors.white)),
+                  onTap: () => onItemSelected(14),
+                ),
+                ListTile(
                   leading: const Icon(Icons.people, color: Colors.white),
                   title: const Text('HR', style: TextStyle(color: Colors.white)),
-                  onTap: () => onItemSelected(14),
+                  onTap: () => onItemSelected(15),
                 ),
                 ListTile(
                   leading: const Icon(Icons.admin_panel_settings, color: Colors.white),
                   title: const Text('Admin', style: TextStyle(color: Colors.white)),
-                  onTap: () => onItemSelected(15),
+                  onTap: () => onItemSelected(16),
                 ),
               ],
             ),
