@@ -1,0 +1,67 @@
+import 'package:flutter/material.dart';
+
+class StorePage extends StatefulWidget {
+  final int initialTabIndex;
+
+  const StorePage({super.key, required this.initialTabIndex});
+
+  @override
+  State<StorePage> createState() => _StorePageState();
+}
+
+class _StorePageState extends State<StorePage> with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(
+      length: 3, // GRN, Delivery Challan, Item
+      vsync: this,
+      initialIndex: widget.initialTabIndex,
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant StorePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialTabIndex != widget.initialTabIndex) {
+      tabController.animateTo(widget.initialTabIndex);
+    }
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TabBar(
+          controller: tabController,
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.grey,
+          tabs: const [
+            Tab(text: "GRN"),
+            Tab(text: "Delivery Challan"),
+            Tab(text: "Item"),
+          ],
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: tabController,
+            children: const [
+              Center(child: Text("GRN Page")),
+              Center(child: Text("Delivery Challan Page")),
+              Center(child: Text("Item Page")),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

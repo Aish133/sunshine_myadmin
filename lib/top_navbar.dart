@@ -1,80 +1,56 @@
 import 'package:flutter/material.dart';
 
 class TopNavbar extends StatelessWidget {
-  const TopNavbar({super.key});
+  final String title;
+  final String section; // e.g., "dashboard", "sales", "purchase"
+
+  const TopNavbar({super.key, required this.title, required this.section});
 
   @override
   Widget build(BuildContext context) {
+    final bool isSales = section == "sales";
+
     return Container(
-      height: 70,
+      height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      color: Colors.black,
+     color: isSales ? Color(0xFFF5F5F5) : Colors.black, 
       child: Row(
         children: [
-          // 🔹 Left-aligned Dashboard title
-          const Text(
-            "Dashboard",
+          Icon(
+            Icons.business,
+            color: isSales ? Colors.black : Colors.white,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            title,
             style: TextStyle(
-              color: Colors.white,
+              color: isSales ? Colors.black : Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-
-          const Spacer(), // Push rest of the content to the right
-
-          // 🔍 Search bar
-         SizedBox(
-            width: 250,
-            height: 35,
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFF5F5F5),
-                borderRadius: BorderRadius.circular(34), // Full rounded
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: const [
-                  Icon(Icons.search, color: Colors.black87),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Search",
-                        hintStyle: TextStyle(color: Colors.black54),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
+          const Spacer(),
+          Icon(Icons.search, color: isSales ? Colors.black54 : Colors.white),
           const SizedBox(width: 20),
-
-          // 🔔 Notification icon
-          const Icon(Icons.notifications_none, color: Colors.white),
-
+          Icon(Icons.notifications_none,
+              color: isSales ? Colors.black54 : Colors.white),
           const SizedBox(width: 20),
-
-          // 👤 User profile
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const CircleAvatar(
                 radius: 16,
-                backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=47'),
+                backgroundImage: NetworkImage('https://randomuser.me/api/portraits/women/44.jpg'),
               ),
               const SizedBox(width: 8),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     "Aishwarya Meshram",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: isSales ? Colors.black : Colors.white,
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
                     ),
@@ -82,14 +58,15 @@ class TopNavbar extends StatelessWidget {
                   Text(
                     "Aishw32@gmail.com",
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: isSales ? Colors.black54 : Colors.white70,
                       fontSize: 12,
                     ),
                   ),
                 ],
               ),
               const SizedBox(width: 8),
-              const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+              Icon(Icons.keyboard_arrow_down,
+                  color: isSales ? Colors.black : Colors.white),
             ],
           ),
         ],

@@ -21,7 +21,7 @@ class Sidebar extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: SizedBox(
-                    height: 30,
+                    height: 70,
                     child: Image.asset(
                       'assets/images/sunshine_logo.png',
                       fit: BoxFit.contain,
@@ -124,6 +124,7 @@ class Sidebar extends StatelessWidget {
           /// 🔽 Logout button at the bottom
           const Divider(color: Colors.white24),
           ListTile(
+            
             leading: const Icon(Icons.logout, color: Colors.redAccent),
             title: const Text(
               'Logout',
