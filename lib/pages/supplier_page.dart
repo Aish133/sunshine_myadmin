@@ -1,50 +1,41 @@
 import 'package:flutter/material.dart';
 
-class CustomerPage extends StatefulWidget {
-  const CustomerPage({super.key});
+class SupplierPage extends StatefulWidget {
+  const SupplierPage({super.key});
 
   @override
-  State<CustomerPage> createState() => _CustomerPageState();
+  State<SupplierPage> createState() => _SupplierPageState();
 }
 
-class _CustomerPageState extends State<CustomerPage> {
-  final TextEditingController nameController = TextEditingController();
+class _SupplierPageState extends State<SupplierPage> {
+  final TextEditingController companyName = TextEditingController();
+  final TextEditingController shortNote = TextEditingController();
+  final TextEditingController regLabel = TextEditingController();
+  final TextEditingController regAddress = TextEditingController();
+  final TextEditingController regCity = TextEditingController();
+  final TextEditingController regStatePin = TextEditingController();
+  final TextEditingController regGstin = TextEditingController();
+
   final TextEditingController primaryContact = TextEditingController();
   final TextEditingController primaryEmail = TextEditingController();
   final TextEditingController keyContact = TextEditingController();
   final TextEditingController keyEmail = TextEditingController();
 
-  String? selectedDomain;
-  final List<String> domainOptions = ['Infra', 'IT', 'IOT', 'Power'];
+  String? selectedType;
+  String? selectedCategory;
+  final List<String> typeOptions = ['Company', 'Individual'];
+  final List<String> categoryOptions = ['Manufacturer', 'Trader', 'Service'];
 
-  final List<String> creditTypes = ['OPEN', 'PDC'];
-  String selectedCreditType = 'OPEN';
+  String selectedCreditType = 'Open';
+  final List<String> creditTypes = ['Open', 'PDC'];
 
-  final List<int> paymentOptions = [0, 7, 30, 40, 60, 90, 120];
   int selectedPaymentDays = 30;
+  final List<int> paymentOptions = [0, 7, 30, 45, 60, 90, 120];
 
+  bool auditApplicable = false;
+  bool isMSME = false;
   bool emailNotification = false;
   bool isActive = true;
-
-  List<Map<String, TextEditingController>> extraAddresses = [];
-
-  void addExtraAddress() {
-    setState(() {
-      extraAddresses.add({
-        'label': TextEditingController(),
-        'address': TextEditingController(),
-        'city': TextEditingController(),
-        'state': TextEditingController(),
-        'gstin': TextEditingController(),
-      });
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    addExtraAddress(); // start with one address (Factory 1 removed)
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,71 +44,59 @@ class _CustomerPageState extends State<CustomerPage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text(
-          'Customer Form',
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            color: Colors.white,
-          ),
+          'Supplier Form',
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Container(
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFF1A1A1A),
+            color: const Color(0xFF2C2C2C),
             borderRadius: BorderRadius.circular(12),
           ),
-          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              sectionTitle("General Info"),
+              sectionTitle("Basic Info"),
               rowInputs([
-                inputField("Customer Name", nameController),
-                dropdownField("Domain", domainOptions, selectedDomain, (val) {
-                  setState(() => selectedDomain = val);
+                inputField("Company Name", companyName),
+                dropdownField("Type", typeOptions, selectedType, (val) {
+                  setState(() => selectedType = val);
                 }),
+              ]),
+              rowInputs([
+                dropdownField("Category", categoryOptions, selectedCategory, (val) {
+                  setState(() => selectedCategory = val);
+                }),
+                inputField("Short Note", shortNote),
               ]),
 
               const SizedBox(height: 16),
-              sectionTitle("Addresses"),
-              ...extraAddresses.asMap().entries.map((entry) {
-                final index = entry.key;
-                final address = entry.value;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Address ${index + 1}",
-                      style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                    rowInputs([
-                      inputField("Label (e.g., Home, Corporate)", address['label']!),
-                    ]),
-                    rowInputs([
-                      inputField("Address", address['address']!),
-                      inputField("City", address['city']!),
-                    ]),
-                    rowInputs([
-                      inputField("State/Pin", address['state']!),
-                      inputField("GSTIN", address['gstin']!),
-                    ]),
-                    const SizedBox(height: 10),
-                  ],
-                );
+              sectionTitle("Registration Address"),
+              rowInputs([
+                inputField("Label (e.g. Home, Office)", regLabel),
+              ]),
+              rowInputs([
+                inputField("Address", regAddress),
+              ]),
+              rowInputs([
+                inputField("City", regCity),
+                inputField("State/Pin", regStatePin),
+              ]),
+              rowInputs([
+                inputField("GSTIN/No", regGstin),
+              ]),
+
+              const SizedBox(height: 16),
+              sectionTitle("Audit / MSME Info"),
+              toggleSwitch("Audit Applicable", auditApplicable, (val) {
+                setState(() => auditApplicable = val);
               }),
-              TextButton.icon(
-                onPressed: addExtraAddress,
-                icon: const Icon(Icons.add, color: Colors.white70),
-                label: const Text("Add Address", style: TextStyle(color: Colors.white70)),
-              ),
+              toggleSwitch("MSME", isMSME, (val) {
+                setState(() => isMSME = val);
+              }),
 
               const SizedBox(height: 16),
               sectionTitle("Contact Info"),
@@ -135,9 +114,14 @@ class _CustomerPageState extends State<CustomerPage> {
               creditTypeSelector(),
               paymentTermsSelector(),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               sectionTitle("Preferences"),
-              preferenceToggles(),
+              toggleSwitch("Email Notification", emailNotification, (val) {
+                setState(() => emailNotification = val);
+              }),
+              toggleSwitch("Status (Active/Disabled)", isActive, (val) {
+                setState(() => isActive = val);
+              }),
 
               const SizedBox(height: 20),
               Center(
@@ -147,13 +131,11 @@ class _CustomerPageState extends State<CustomerPage> {
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                    textStyle: const TextStyle(
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
                   ),
-                  child: const Text('Save Customer'),
+                  child: const Text(
+                    'Save Supplier',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               )
             ],
@@ -163,13 +145,12 @@ class _CustomerPageState extends State<CustomerPage> {
     );
   }
 
-  Widget sectionTitle(String text) {
+  Widget sectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: Text(
-        text,
+        title,
         style: const TextStyle(
-          fontFamily: 'Roboto',
           fontSize: 18,
           fontWeight: FontWeight.bold,
           color: Colors.white,
@@ -188,8 +169,10 @@ class _CustomerPageState extends State<CustomerPage> {
           decoration: InputDecoration(
             labelText: label,
             labelStyle: const TextStyle(color: Colors.white70),
+            filled: true,
+            fillColor: const Color(0xFF3A3A3A),
             enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white38),
+              borderSide: const BorderSide(color: Colors.white30),
               borderRadius: BorderRadius.circular(8),
             ),
             focusedBorder: OutlineInputBorder(
@@ -214,8 +197,9 @@ class _CustomerPageState extends State<CustomerPage> {
           decoration: InputDecoration(
             labelText: label,
             labelStyle: const TextStyle(color: Colors.white70),
+            filled: true,
+            fillColor: const Color(0xFF3A3A3A),
             border: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white70),
               borderRadius: BorderRadius.circular(8),
             ),
           ),
@@ -234,6 +218,31 @@ class _CustomerPageState extends State<CustomerPage> {
     return Row(children: children);
   }
 
+  Widget toggleSwitch(String label, bool value, Function(bool) onChanged) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.grey[850],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontSize: 16, color: Colors.white70),
+          ),
+          const Spacer(),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeColor: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget creditTypeSelector() {
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -250,7 +259,6 @@ class _CustomerPageState extends State<CustomerPage> {
             selectedColor: Colors.white,
             backgroundColor: Colors.grey[800],
             labelStyle: TextStyle(
-              fontFamily: 'Roboto',
               color: isSelected ? Colors.black : Colors.white,
             ),
           );
@@ -275,57 +283,10 @@ class _CustomerPageState extends State<CustomerPage> {
             selectedColor: Colors.white,
             backgroundColor: Colors.grey[800],
             labelStyle: TextStyle(
-              fontFamily: 'Roboto',
               color: isSelected ? Colors.black : Colors.white,
             ),
           );
         }).toList(),
-      ),
-    );
-  }
-
-  Widget preferenceToggles() {
-    return Column(
-      children: [
-        rowInputs([
-          Expanded(child: preferenceTile("Email Notifications", emailNotification, (val) {
-            setState(() => emailNotification = val);
-          })),
-        ]),
-        rowInputs([
-          Expanded(child: preferenceTile("Account Status - Active/Disabled", isActive, (val) {
-            setState(() => isActive = val);
-          })),
-        ]),
-      ],
-    );
-  }
-
-  Widget preferenceTile(String label, bool value, Function(bool) onChanged) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 72, 72, 72),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 16,
-              color: Colors.white,
-            ),
-          ),
-          const Spacer(),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            activeColor: Colors.white,
-          ),
-        ],
       ),
     );
   }
