@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'pages/customer_page.dart';
 class Sidebar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemSelected;
@@ -33,6 +33,34 @@ class Sidebar extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [   
+                Theme(
+                  data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    leading: const Icon(Icons.people, color: Colors.white),
+                    title: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const CustomerPage()),
+                                      );
+                                    },
+                                    child: const Text(
+                                      'HR',
+                                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                    iconColor: Colors.white,
+                    collapsedIconColor: Colors.white,
+                    childrenPadding: const EdgeInsets.only(left: 20),
+                    children: [
+                      _buildSubItem("Attendance", 15),
+                      _buildSubItem("Salary", 16),
+                      _buildSubItem("Manage Employee", 17),
+                      _buildSubItem("Ledgers",18),
+                      _buildSubItem("HR Services",19),
+                    ],
+                  ),
+                ),
                 /// 🔽 SALES
                 Theme(
                   data: ThemeData().copyWith(dividerColor: Colors.transparent),
@@ -85,7 +113,7 @@ class Sidebar extends StatelessWidget {
                     ],
                   ),
                 ),
-
+                
                 /// Other Main Items
                 ListTile(
                   leading: const Icon(Icons.factory, color: Colors.white),
@@ -108,14 +136,9 @@ class Sidebar extends StatelessWidget {
                   onTap: () => onItemSelected(14),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.people, color: Colors.white),
-                  title: const Text('HR', style: TextStyle(color: Colors.white)),
-                  onTap: () => onItemSelected(15),
-                ),
-                ListTile(
                   leading: const Icon(Icons.admin_panel_settings, color: Colors.white),
                   title: const Text('Admin', style: TextStyle(color: Colors.white)),
-                  onTap: () => onItemSelected(16),
+                  onTap: () => onItemSelected(20),
                 ),
               ],
             ),

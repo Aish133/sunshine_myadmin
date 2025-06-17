@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'costumer.dart';
+import 'customer_layout.dart';
 class SalesPage extends StatefulWidget {
   final int initialTabIndex;
 
@@ -43,6 +43,7 @@ class _SalesPageState extends State<SalesPage> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TabBar(
+          indicatorColor: Colors.black,
           controller: tabController,
           labelColor: Colors.black,
           unselectedLabelColor: Colors.grey,
@@ -57,7 +58,7 @@ class _SalesPageState extends State<SalesPage> with TickerProviderStateMixin {
           child: TabBarView(
             controller: tabController,
             children: const [
-              const CustomerPage(),
+              const CustomerLayout(),
               Center(child: Text("Quotation Page")),
               Center(child: Text("Sales Order Page")),
               Center(child: Text("Sales Invoice Page")),

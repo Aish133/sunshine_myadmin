@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'additem_layout.dart';
 class StorePage extends StatefulWidget {
   final int initialTabIndex;
 
@@ -42,6 +42,7 @@ class _StorePageState extends State<StorePage> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TabBar(
+          indicatorColor: Colors.black,
           controller: tabController,
           labelColor: Colors.black,
           unselectedLabelColor: Colors.grey,
@@ -57,7 +58,7 @@ class _StorePageState extends State<StorePage> with TickerProviderStateMixin {
             children: const [
               Center(child: Text("GRN Page")),
               Center(child: Text("Delivery Challan Page")),
-              Center(child: Text("Item Page")),
+              const AddItemLayout(),
             ],
           ),
         ),

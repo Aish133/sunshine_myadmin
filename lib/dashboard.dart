@@ -4,6 +4,7 @@ import 'top_navbar.dart';
 import 'pages/sales.dart';
 import 'pages/purchase.dart';
 import 'pages/store.dart';
+import 'pages/hr.dart';
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -20,7 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
   String getCurrentSection() {
-  if (selectedIndex >= 0 && selectedIndex <= 10) {
+  if (selectedIndex >= 0 && selectedIndex <= 21) {
     return "sales";
   }
   return "dashboard";
@@ -36,6 +37,9 @@ String getCurrentTitle() {
    if (selectedIndex >= 8 && selectedIndex <= 10) {
     return "Store";
   }
+   if(selectedIndex>=15 && selectedIndex<=19){
+    return "HR Dashboard";
+   }
   return "Dashboard";
 }
 
@@ -48,6 +52,9 @@ String getCurrentTitle() {
   }
      if (selectedIndex >= 8 && selectedIndex <= 10) {
     return StorePage(initialTabIndex: selectedIndex - 8);
+  }
+    if (selectedIndex >= 15 && selectedIndex <= 19) {
+    return HR(initialTabIndex: selectedIndex - 15);
   }
 
 
