@@ -16,7 +16,7 @@ class _StorePageState extends State<StorePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     tabController = TabController(
-      length: 3, // GRN, Delivery Challan, Item
+      length: 7, // GRN, Delivery Challan, Item
       vsync: this,
       initialIndex: widget.initialTabIndex,
     );
@@ -47,9 +47,13 @@ class _StorePageState extends State<StorePage> with TickerProviderStateMixin {
           labelColor: Colors.black,
           unselectedLabelColor: Colors.grey,
           tabs: const [
-            Tab(text: "GRN"),
-            Tab(text: "Delivery Challan"),
             Tab(text: "Item"),
+            Tab(text:"GRN"),
+            Tab(text:"Stock"),
+            Tab(text: "Delivery Challan"),
+            Tab(text:"Shortage"),
+            Tab(text: "Purchase Request"),
+            Tab(text:"Material Request"),
           ],
         ),
         Expanded(

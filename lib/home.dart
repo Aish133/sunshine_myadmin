@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'package:my_app/dashboard.dart';
+import 'package:go_router/go_router.dart'; // ✅ Added
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,7 +11,6 @@ class HomePage extends StatelessWidget {
       backgroundColor: const Color(0xFF161418),
       body: Stack(
         children: [
-          // Background "Sunshine" text
           Center(
             child: Text(
               'Sunshine',
@@ -23,8 +22,6 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          
-          // Cards Container
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -32,18 +29,14 @@ class HomePage extends StatelessWidget {
                 _buildCard(
                   context,
                   'HR Panel',
-                  'https://images.unsplash.com/photo-1621075160523-b936ad96132a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-                  () => Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(builder: (context) => const DashboardScreen()),
-),
-
+                  'https://images.unsplash.com/photo-1621075160523-b936ad96132a?auto=format&fit=crop&w=1170&q=80',
+                  () => context.go('/dashboard'), // ✅ Updated navigation
                 ),
                 const SizedBox(width: 40),
                 _buildCard(
                   context,
                   'Inventory Management',
-                  'https://images.unsplash.com/photo-1621075160523-b936ad96132a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
+                  'https://images.unsplash.com/photo-1621075160523-b936ad96132a?auto=format&fit=crop&w=1170&q=80',
                   () {
                     // TODO: Implement inventory management navigation
                   },

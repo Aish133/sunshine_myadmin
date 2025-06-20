@@ -1,57 +1,53 @@
 import 'package:flutter/material.dart';
 
-class CustomExpansionTileWithArrowTap extends StatefulWidget {
+class CustomExpansionTileWithArrowTap extends StatelessWidget {
   final String title;
   final IconData icon;
   final List<Widget> children;
+  final VoidCallback onTitleTap;
   final VoidCallback onArrowTap;
+  final bool isExpanded;
 
   const CustomExpansionTileWithArrowTap({
     super.key,
     required this.title,
     required this.icon,
     required this.children,
+    required this.onTitleTap,
     required this.onArrowTap,
+    required this.isExpanded,
   });
-
-  @override
-  State<CustomExpansionTileWithArrowTap> createState() => _CustomExpansionTileWithArrowTapState();
-}
-
-class _CustomExpansionTileWithArrowTapState extends State<CustomExpansionTileWithArrowTap> {
-  bool _expanded = false;
-
-  void _handleArrowTap() {
-    setState(() {
-      _expanded = !_expanded;
-    });
-
-    // Navigate to page
-    widget.onArrowTap();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ListTile(
-          leading: Icon(widget.icon, color: Colors.white),
-          title: Text(
-            widget.title,
-            style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+          leading: Icon(icon, color: Colors.white),
+          title: GestureDetector(
+            onTap: onTitleTap,
+            child: Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
           trailing: GestureDetector(
-            onTap: _handleArrowTap,
+            onTap: onArrowTap,
             child: Icon(
-              _expanded ? Icons.expand_less : Icons.expand_more,
+              isExpanded ? Icons.expand_less : Icons.expand_more,
               color: Colors.white,
             ),
           ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         ),
-        if (_expanded)
+        if (isExpanded)
           Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Column(children: widget.children),
+            padding: const EdgeInsets.only(left: 40),
+            child: Column(children: children),
           ),
       ],
     );

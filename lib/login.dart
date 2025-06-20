@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'home.dart';
+import 'package:go_router/go_router.dart'; // ✅ Import go_router
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -50,11 +50,10 @@ class _LoginPageState extends State<LoginPage> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('jwt_token', token);
 
-      Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(builder: (context) => const HomePage()),
-);
-
+      // ✅ Navigate using go_router
+      if (mounted) {
+        context.go('/home'); // or: context.goNamed('home');
+      }
     } else {
       showDialog(
         context: context,
@@ -108,20 +107,15 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Image.asset(
-                          'assets/images/sunshine_logo.png',
-                          height: 100,
-                        ),
+                        Image.asset('assets/images/sunshine_logo.png', height: 100),
                         const SizedBox(height: 20),
-
                         TextFormField(
-                          style: TextStyle(color: Colors.white),
-
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.white),
                             hintText: 'Email',
+                            hintStyle: const TextStyle(color: Colors.white),
                             prefixIcon: const Icon(Icons.email_outlined),
                             suffixIcon: _isEmailValid
                                 ? const Icon(Icons.check_circle, color: Colors.green)
@@ -137,13 +131,13 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         const SizedBox(height: 15),
-
                         TextFormField(
                           controller: _passwordController,
                           obscureText: true,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.white),
                             hintText: 'Password',
+                            hintStyle: const TextStyle(color: Colors.white),
                             prefixIcon: const Icon(Icons.lock_outline),
                             suffixIcon: _isPasswordValid
                                 ? const Icon(Icons.check_circle, color: Colors.green)
@@ -159,7 +153,6 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         const SizedBox(height: 20),
-
                         SizedBox(
                           width: double.infinity,
                           height: 45,
@@ -184,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color:Color.fromARGB(255, 255, 255, 255),
+                                      color: Colors.white,
                                     ),
                                   ),
                           ),
