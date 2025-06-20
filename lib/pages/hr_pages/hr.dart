@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'attendance_layout.dart';
+import 'manage_employee_layout.dart';
+import 'holiday.dart';
+import 'salary_layout.dart';
 class HR extends StatefulWidget {
   final int initialTabIndex;
 
@@ -48,21 +51,21 @@ class _HRState extends State<HR> with TickerProviderStateMixin {
           labelColor: Colors.black,
           unselectedLabelColor: Colors.grey,
           tabs: const [
+            Tab(text: "Manage Employee"),
             Tab(text: "Attendance"),
             Tab(text: "Salary"),
-            Tab(text: "Manage Employee"),
-            Tab(text: "Ledgers"),
             Tab(text: "HR Services"),
+            Tab(text: "To Do"),
           ],
         ),
         Expanded(
           child: TabBarView(
             controller: tabController,
             children: const [
-              Center(child: Text("Quotation Page")),
-              Center(child: Text("Quotation Page")),
-              Center(child: Text("Sales Order Page")),
-              Center(child: Text("Sales Invoice Page")),
+              ManageEmployeeLayout(),
+              AttendanceLayout(),
+              SalaryLayout(),
+              HolidayScreen(),
               Center(child: Text("HR Services"))
             ],
           ),

@@ -4,7 +4,12 @@ import 'top_navbar.dart';
 import 'pages/sales.dart';
 import 'pages/purchase.dart';
 import 'pages/store.dart';
-import 'pages/hr.dart';
+import 'pages/hr_pages/hr.dart';
+import 'pages/birthday.dart';
+import 'pages/sales_layout.dart';
+import 'pages/purchase_layout.dart';
+
+/// ✅ Declare the missing class DashboardScreen
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -14,57 +19,65 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int selectedIndex = -1;
+  Widget? activeCustomPage; // 🆕 Used for custom layouts like CustomerLayout
 
   void handleSidebarTap(int index) {
     setState(() {
       selectedIndex = index;
+      activeCustomPage = null; // clear custom page when tab selected
     });
   }
-  String getCurrentSection() {
-  if (selectedIndex >= 0 && selectedIndex <= 21) {
-    return "sales";
-  }
-  return "dashboard";
-}
 
-String getCurrentTitle() {
-  if (selectedIndex >= 0 && selectedIndex <= 3) {
-    return "Sales";
+  void handleCustomPage(Widget page) {
+    setState(() {
+      activeCustomPage = page;
+      selectedIndex = -1; // clear selected index when loading custom page
+    });
   }
-  if (selectedIndex >= 4 && selectedIndex <= 7) {
-    return "Purchase";
+
+  String getCurrentTitle() {
+    if (activeCustomPage is BirthdayPage) return "HR Panel";
+    if (activeCustomPage is SalesLayout)  return "Sales";
+    if (activeCustomPage is PurchaseLayout) return "Purchase";
+    if (selectedIndex >= 0 && selectedIndex <= 3) return "Sales";
+    if (selectedIndex >= 4 && selectedIndex <= 7) return "Purchase";
+    if (selectedIndex >= 8 && selectedIndex <= 10) return "Design";
+    if (selectedIndex >= 11 && selectedIndex <= 17) return "Store";
+    if (selectedIndex == 18) return "Production & Planning";
+    if (selectedIndex == 19) return "Quality";
+    if (selectedIndex >= 20 && selectedIndex <= 21) return "Account";
+    if (selectedIndex >= 22 && selectedIndex <= 26) return "HR";
+    if (selectedIndex == 27) return "Admin";
+    if (selectedIndex == 28) return "Store";
+
+    return "Dashboard";
   }
-   if (selectedIndex >= 8 && selectedIndex <= 10) {
-    return "Store";
+
+  String getCurrentSection() {
+    if (selectedIndex >= 0 && selectedIndex <= 21) {
+      return "sales";
+    }
+    return "dashboard";
   }
-   if(selectedIndex>=15 && selectedIndex<=19){
-    return "HR Dashboard";
-   }
-  return "Dashboard";
-}
 
   Widget getCurrentPage() {
+    if (activeCustomPage != null) return activeCustomPage!;
+
     if (selectedIndex >= 0 && selectedIndex <= 3) {
       return SalesPage(initialTabIndex: selectedIndex);
     }
-     if (selectedIndex >= 4 && selectedIndex <= 7) {
-    return PurchasePage(initialTabIndex: selectedIndex - 4); // Normalize index to 0–3
-  }
-     if (selectedIndex >= 8 && selectedIndex <= 10) {
-    return StorePage(initialTabIndex: selectedIndex - 8);
-  }
-    if (selectedIndex >= 15 && selectedIndex <= 19) {
-    return HR(initialTabIndex: selectedIndex - 15);
-  }
+    if (selectedIndex >= 4 && selectedIndex <= 7) {
+      return PurchasePage(initialTabIndex: selectedIndex - 4);
+    }
+    if (selectedIndex >= 11 && selectedIndex <= 17) {
+      return StorePage(initialTabIndex: selectedIndex - 11);
+    }
+    if (selectedIndex >= 22 && selectedIndex <= 26) {
+      return HR(initialTabIndex: selectedIndex - 22);
+    }
 
-
-
-    // Add more conditions for other indexes like PurchasePage, etc.
     return const Center(
-      child: Text(
-        "Main Dashboard Content",
-        style: TextStyle(fontSize: 24),
-      ),
+      child: Text("Main Dashboard Content", style: TextStyle(fontSize: 24)),
     );
   }
 
@@ -77,16 +90,19 @@ String getCurrentTitle() {
           Sidebar(
             selectedIndex: selectedIndex,
             onItemSelected: handleSidebarTap,
+            onHRArrowTap: () => handleCustomPage(const BirthdayPage()), // 🆕 handles HR arrow click
+            onSalesArrowTap:()=> handleCustomPage(const SalesLayout()),
+            onPurchaseArrowTap:()=>handleCustomPage(const PurchaseLayout()),
           ),
           Expanded(
             child: Column(
               children: [
                 TopNavbar(
-                          title: getCurrentTitle(),
-                          section: getCurrentSection(),
-                            ),
+                  title: getCurrentTitle(),
+                  section: getCurrentSection(),
+                ),
                 Expanded(
-                  child: getCurrentPage(), // ✅ Use dynamic page here
+                  child: getCurrentPage(),
                 ),
               ],
             ),

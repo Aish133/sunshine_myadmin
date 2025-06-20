@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'pages/customer_page.dart';
+import 'custom_arrow.dart';
 class Sidebar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemSelected;
-
+  final void Function() onHRArrowTap;
+  final void Function() onSalesArrowTap;
+  final void Function() onPurchaseArrowTap;
   const Sidebar({
     super.key,
     required this.selectedIndex,
     required this.onItemSelected,
+    required this.onHRArrowTap,
+    required this.onSalesArrowTap,
+    required this.onPurchaseArrowTap,
   });
 
   @override
@@ -32,44 +37,14 @@ class Sidebar extends StatelessWidget {
                  Expanded(
             child: ListView(
               padding: EdgeInsets.zero,
-              children: [   
+              children: [ 
+                 /// 🔽 SALES
                 Theme(
                   data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    leading: const Icon(Icons.people, color: Colors.white),
-                    title: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => const CustomerPage()),
-                                      );
-                                    },
-                                    child: const Text(
-                                      'HR',
-                                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                    iconColor: Colors.white,
-                    collapsedIconColor: Colors.white,
-                    childrenPadding: const EdgeInsets.only(left: 20),
-                    children: [
-                      _buildSubItem("Attendance", 15),
-                      _buildSubItem("Salary", 16),
-                      _buildSubItem("Manage Employee", 17),
-                      _buildSubItem("Ledgers",18),
-                      _buildSubItem("HR Services",19),
-                    ],
-                  ),
-                ),
-                /// 🔽 SALES
-                Theme(
-                  data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    leading: const Icon(Icons.point_of_sale, color: Colors.white),
-                    title: const Text('Sales', style: TextStyle(color: Colors.white)),
-                    iconColor: Colors.white,
-                    collapsedIconColor: Colors.white,
-                    childrenPadding: const EdgeInsets.only(left: 20),
+                  child: CustomExpansionTileWithArrowTap(
+                    title: "Sales",
+                    icon: Icons.point_of_sale,
+                    onArrowTap: onSalesArrowTap,
                     children: [
                       _buildSubItem("Customer", 0),
                       _buildSubItem("Quotation", 1),
@@ -78,16 +53,13 @@ class Sidebar extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 /// 🔽 PURCHASE
                 Theme(
                   data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    leading: const Icon(Icons.shopping_cart, color: Colors.white),
-                    title: const Text('Purchase', style: TextStyle(color: Colors.white)),
-                    iconColor: Colors.white,
-                    collapsedIconColor: Colors.white,
-                    childrenPadding: const EdgeInsets.only(left: 20),
+                  child: CustomExpansionTileWithArrowTap(
+                    title: "Purchase",
+                    icon: Icons.shopping_cart,
+                    onArrowTap:onPurchaseArrowTap,
                     children: [
                       _buildSubItem("Suppliers", 4),
                       _buildSubItem("Quote", 5),
@@ -96,50 +68,117 @@ class Sidebar extends StatelessWidget {
                     ],
                   ),
                 ),
-
-                /// 🔽 STORE
+                /// Design
                 Theme(
                   data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    leading: const Icon(Icons.store, color: Colors.white),
-                    title: const Text('Store', style: TextStyle(color: Colors.white)),
-                    iconColor: Colors.white,
-                    collapsedIconColor: Colors.white,
-                    childrenPadding: const EdgeInsets.only(left: 20),
+                  child: CustomExpansionTileWithArrowTap(
+                    title: "Design",
+                    icon: Icons.design_services,
+                    onArrowTap:onPurchaseArrowTap,
                     children: [
-                      _buildSubItem("GRN", 8),
-                      _buildSubItem("Delivery Challan", 9),
-                      _buildSubItem("Item", 10),
+                      _buildSubItem("Design Dashboard", 8),
+                      _buildSubItem("Add BOM", 9),
+                      _buildSubItem("Add Test Report", 10),
+                    ],
+                  ),
+                ),
+                ///store
+                Theme(
+                  data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                  child: CustomExpansionTileWithArrowTap(
+                    title: "Store",
+                    icon: Icons.store,
+                    onArrowTap:onPurchaseArrowTap,
+                    children: [
+                      _buildSubItem("Item", 11),
+                      _buildSubItem("GRN", 12),
+                      _buildSubItem("Stock", 13),
+                      _buildSubItem("Delivery challan", 14),
+                      _buildSubItem("Shortages", 15),
+                      _buildSubItem("Purchase ReQuest", 16),
+                      _buildSubItem("Material Request", 17),
+                    ],
+                  ),
+                ),
+                /// production planning
+                Theme(
+                  data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                  child: CustomExpansionTileWithArrowTap(
+                    title: "Production",
+                    icon: Icons.factory,
+                    onArrowTap:onPurchaseArrowTap,
+                    children: [
+                      _buildSubItem("Production Plan", 18),
+                    
+                    ],
+                  ),
+                ),
+                ///Quality
+                Theme(
+                  data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                  child: CustomExpansionTileWithArrowTap(
+                    title: "Quality",
+                    icon: Icons.verified,
+                    onArrowTap:onPurchaseArrowTap,
+                    children: [
+                      _buildSubItem("SOP", 19),
+                    ],
+                  ),
+                ),
+                ///Account
+                Theme(
+                  data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                  child: CustomExpansionTileWithArrowTap(
+                    title: "Account",
+                    icon: Icons.design_services,
+                    onArrowTap:onPurchaseArrowTap,
+                    children: [
+                      _buildSubItem("D", 20),
+                      _buildSubItem("Ledger", 21),
+
+                    ],
+                  ),
+                ),
+///HR
+                Theme(
+                  data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                  child: CustomExpansionTileWithArrowTap(
+                    title: "HR",
+                    icon: Icons.people,
+                    onArrowTap: onHRArrowTap,
+                    children: [
+                      _buildSubItem("Mange Employee", 22),
+                      _buildSubItem("Attendance", 23),
+                      _buildSubItem("Salary", 24),
+                      _buildSubItem("HR Services", 25),
+                      _buildSubItem("To Do", 26),
+                    ],
+                  ),
+                ),
+
+                Theme(
+                  data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                  child: CustomExpansionTileWithArrowTap(
+                    title: "Admin",
+                    icon: Icons.admin_panel_settings,
+                    onArrowTap:onPurchaseArrowTap,
+                    children: [
+                      _buildSubItem("System", 27),
+                    ],
+                  ),
+                ),
+                Theme(
+                  data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                  child: CustomExpansionTileWithArrowTap(
+                    title: "Setup ERP",
+                    icon: Icons.shopping_cart,
+                    onArrowTap:onPurchaseArrowTap,
+                    children: [
+                      _buildSubItem("Create Master", 28),
                     ],
                   ),
                 ),
                 
-                /// Other Main Items
-                ListTile(
-                  leading: const Icon(Icons.factory, color: Colors.white),
-                  title: const Text('Production', style: TextStyle(color: Colors.white)),
-                  onTap: () => onItemSelected(11),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.verified, color: Colors.white),
-                  title: const Text('Quality', style: TextStyle(color: Colors.white)),
-                  onTap: () => onItemSelected(12),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.design_services, color: Colors.white),
-                  title: const Text('Design', style: TextStyle(color: Colors.white)),
-                  onTap: () => onItemSelected(13),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.design_services, color: Colors.white),
-                  title: const Text('Account', style: TextStyle(color: Colors.white)),
-                  onTap: () => onItemSelected(14),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.admin_panel_settings, color: Colors.white),
-                  title: const Text('Admin', style: TextStyle(color: Colors.white)),
-                  onTap: () => onItemSelected(20),
-                ),
               ],
             ),
           ),
